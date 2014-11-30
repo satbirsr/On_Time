@@ -1,9 +1,6 @@
 package com.userinterfaces.ontime;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +9,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import java.util.Calendar;
-
+import com.userinterfaces.ontime.Model.Alarm;
 
 public class AddAlarm extends Activity {
 
-    private PendingIntent pendingIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,26 +21,20 @@ public class AddAlarm extends Activity {
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         final DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         Button setButton = (Button) findViewById(R.id.setButton);
-        final Calendar calendar =  Calendar.getInstance();
 
         setButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-                calendar.set(Calendar.MONTH, datePicker.getMonth());
-                calendar.set(Calendar.YEAR, datePicker.getYear());
+                Alarm alarm = Alarm.createNewAlarm(
+                        timePicker.getCurrentHour(),
+                        timePicker.getCurrentMinute(),
+                        datePicker.getYear(),
+                        datePicker.getDayOfMonth(),
+                        datePicker.getMonth(),
+                        "New Alarm"
+                );
+                alarm.setAlarm(AddAlarm.this);
 
-                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                calendar.set(Calendar.SECOND, 0);
-                //calendar.set(Calendar.AM_PM, Calendar.PM);
-
-                Intent alarmIntent = new Intent(AddAlarm.this, AlarmReceiver.class);
-                pendingIntent = PendingIntent.getBroadcast(AddAlarm.this, 0, alarmIntent, 0);
-
-                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-                System.out.println("Alarm set");
             }
         });
     }

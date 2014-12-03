@@ -27,23 +27,23 @@ public class AlarmRepository {
         * Find the alarm in the database and remove it
          */
     }
+//
+//    public Alarm getAlarmByID(int id) {
+//        /*
+//        * Need to retrieve all alarm data based on this id
+//        * then hydrate the data and return it
+//         */
+//        return this.hydrate(id, hour, minute, year, day, month, alarmName);
+//
+//    }
 
-    public Alarm getAlarmByID(int id) {
-        /*
-        * Need to retrieve all alarm data based on this id
-        * then hydrate the data and return it
-         */
-        return this.hydrate(id, hour, minute, year, day, month, alarmName);
-
-    }
-
-    public Alarm getAlarmbyName(String alarmName) {
-        /*
-        * Need to find alarm data from database based on alarm name
-        * then hydrate and return the alarm
-         */
-        return this.hydrate(id, hour, minute, year, day, month, alarmName);
-    }
+//    public Alarm getAlarmbyName(String alarmName) {
+//        /*
+//        * Need to find alarm data from database based on alarm name
+//        * then hydrate and return the alarm
+//         */
+//        return this.hydrate(id, hour, minute, year, day, month, alarmName);
+//    }
 
     public ArrayList<Alarm> getAllAlarms() {
         /*

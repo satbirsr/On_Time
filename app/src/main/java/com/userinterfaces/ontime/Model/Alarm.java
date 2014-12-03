@@ -10,6 +10,7 @@ import com.userinterfaces.ontime.AddAlarm;
 import com.userinterfaces.ontime.AlarmReceiver;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by AKresling on 14-11-30.
@@ -84,7 +85,7 @@ public class Alarm {
 
     public long timeInMillis() {
         Calendar cal = Calendar.getInstance();
-        cal.set(this.year, this.month, this.day, this.hour, this.minute);
+        cal.set(this.year, this.month, this.day, this.hour, this.minute, 0);
         return cal.getTimeInMillis();
     }
 
@@ -109,10 +110,13 @@ public class Alarm {
         PendingIntent pendingIntent;
 
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+        pendingIntent = PendingIntent.getBroadcast(context, 1, alarmIntent, 0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, this.timeInMillis(), pendingIntent);
+        System.out.println(this.timeInMillis());
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, this.timeInMillis(), pendingIntent);
+
     }
 
     /*

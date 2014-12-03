@@ -25,6 +25,7 @@ public class AddAlarm extends Activity {
         setButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
+
                 Alarm alarm = Alarm.createNewAlarm(
                         timePicker.getCurrentHour(),
                         timePicker.getCurrentMinute(),
@@ -35,6 +36,7 @@ public class AddAlarm extends Activity {
                 );
                 alarm.setAlarm(AddAlarm.this);
 
+                System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
             }
         });
     }

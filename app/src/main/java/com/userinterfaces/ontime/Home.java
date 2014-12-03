@@ -7,14 +7,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class Home extends Activity {
+
+    // constants
+    int UPDATE_INTERVAL = 1000;     // duration (ms) to sleep between updates to time displays
+
+    // default time formatting
+    SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm");
+    SimpleDateFormat markerFormat = new SimpleDateFormat("a");
+    SimpleDateFormat secFormat = new SimpleDateFormat("ss");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // start updating the time
+        Runnable updater = new TimeUpdater();
+        Thread updateThread = new Thread(updater);
+        updateThread.start();
 
         Button goToAddAlarmButton = (Button) findViewById(R.id.goToAddAlarmButton);
 
@@ -49,5 +66,49 @@ public class Home extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateTime() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    Calendar c = Calendar.getInstance();
+                    String time = timeFormat.format(c.getTime());
+                    String marker = markerFormat.format(c.getTime());
+                    String sec = secFormat.format(c.getTime());
+                    String date = dateFormat.format(c.getTime());
+
+                    TextView timeText = (TextView)findViewById(R.id.theTime);
+                    TextView markerText = (TextView)findViewById(R.id.theMarker);
+                    TextView secText = (TextView)findViewById(R.id.theSec);
+                    TextView dateText = (TextView)findViewById(R.id.theDate);
+
+                    timeText.setText(time);
+                    markerText.setText(marker);
+                    secText.setText(sec);
+                    dateText.setText(date);
+
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+        });
+    }
+
+    class TimeUpdater implements Runnable {
+
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    updateTime();
+                    Thread.sleep(UPDATE_INTERVAL);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+        }
     }
 }

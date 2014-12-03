@@ -11,5 +11,10 @@
     <string name="title_activity_wake_up_screen">WakeUpScreen</string>
     <string name="wake_up">Wake Up!</string>
 
+    <string name="default_time">7:30</string>
+    <string name="default_marker">AM</string>
+    <string name="default_sec">05</string>
+    <string name="default_date">Tue Nov 11</string>
 
+    <string name="button_addAlarm">Add Alarm</string>
 </resources>

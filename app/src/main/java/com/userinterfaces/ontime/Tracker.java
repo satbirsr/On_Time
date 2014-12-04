@@ -50,6 +50,7 @@ public class Tracker extends Service implements LocationListener
     protected LocationManager locationManager;
 
     public Tracker(Context context) {
+        System.out.println("testing tracker");
         this.mContext = context;
         getLocation();
     }

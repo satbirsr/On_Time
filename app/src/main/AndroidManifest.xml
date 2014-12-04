@@ -43,11 +43,15 @@
             android:enabled="true" />
 
         <receiver android:name="com.userinterfaces.ontime.AlarmReceiver" />
+        <receiver android:name="com.userinterfaces.ontime.Model.WeatherCheckReceiver" />
 
         <activity
             android:name="com.userinterfaces.ontime.WakeUpScreen"
             android:label="@string/title_activity_wake_up_screen" >
         </activity>
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
 </manifest>

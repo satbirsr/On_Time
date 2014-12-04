@@ -41,6 +41,14 @@ public class RetrieveWeather {
         this.mContext = context;
         //this.cityName = city;
         new Connection().execute();
+        try
+        {
+            Thread.sleep(10000);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private class Connection extends AsyncTask {
@@ -235,6 +243,7 @@ public class RetrieveWeather {
                 cityName = addresses.get(0).getLocality();
                 System.out.println("Testing4 " + cityName);
                 cityName = "Toronto";
+                System.out.println("City is " + cityName);
             }
         }
         catch(IOException e)

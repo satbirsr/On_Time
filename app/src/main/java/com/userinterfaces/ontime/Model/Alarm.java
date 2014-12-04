@@ -117,7 +117,7 @@ public class Alarm {
         // check weather
         Calendar cal = Calendar.getInstance();
         cal.set(this.year, this.month, this.day, this.hour, this.minute, 0);
-        cal.setTimeInMillis(cal.getTimeInMillis() - (15 * MINUTE_IN_MILLIS));
+        cal.setTimeInMillis(cal.getTimeInMillis() - (1 * MINUTE_IN_MILLIS));
         Alarm alarmCopy = new Alarm(
                 cal.get(Calendar.HOUR_OF_DAY),
                 cal.get(Calendar.MINUTE),

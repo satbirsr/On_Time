@@ -47,7 +47,7 @@ public class AddAlarm extends Activity {
 
                 AlarmManager alarmManager = (AlarmManager) AddAlarm.this.getSystemService(Context.ALARM_SERVICE);
 
-                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (20 * 60000), pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (2 * 60000), pendingIntent);
 
                 System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
             }

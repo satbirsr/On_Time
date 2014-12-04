@@ -89,6 +89,10 @@ public class Alarm {
         return Alarm.instance;
     }
 
+    public static void killInstance() {
+        Alarm.instance = null;
+    }
+
     public static Alarm getInstance(
             int hour,
             int minute,

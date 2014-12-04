@@ -26,7 +26,7 @@ public class AddAlarm extends Activity {
 
             public void onClick(View arg0) {
 
-                Alarm alarm = Alarm.getInstance(
+                Alarm alarm = Alarm.createNewAlarm(
                         timePicker.getCurrentHour(),
                         timePicker.getCurrentMinute(),
                         datePicker.getYear(),

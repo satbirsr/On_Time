@@ -16,7 +16,6 @@ import java.util.Date;
  * Created by AKresling on 14-11-30.
  */
 public class Alarm {
-    private static Alarm instance;
     private int hour;
     private int minute;
     private int year;
@@ -84,7 +83,7 @@ public class Alarm {
         return cal.getTimeInMillis();
     }
 
-    public static Alarm getInstance(
+    public static Alarm createNewAlarm(
             int hour,
             int minute,
             int year,
@@ -92,11 +91,7 @@ public class Alarm {
             int month,
             String alarmName
     ) {
-        if(Alarm.instance == null) {
-            Alarm.instance = new Alarm(hour, minute, year, day, month, alarmName);
-        }
-        return Alarm.instance;
-
+       return new Alarm(hour, minute, year, day, month, alarmName);
     }
 
     public void setAlarm(Context context) {

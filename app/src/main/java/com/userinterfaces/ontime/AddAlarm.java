@@ -21,6 +21,7 @@ public class AddAlarm extends Activity {
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         final DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         Button setButton = (Button) findViewById(R.id.setButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         setButton.setOnClickListener(new View.OnClickListener() {
 
@@ -35,6 +36,18 @@ public class AddAlarm extends Activity {
                         "New Alarm"
                 );
                 alarm.setAlarm(AddAlarm.this);
+
+                System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                Alarm alarm = Alarm.getExistingInstance();
+
+                alarm.cancelAlarm();
 
                 System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
             }

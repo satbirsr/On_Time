@@ -68,8 +68,7 @@
         android:background="@drawable/button_background"
         android:textColor="#ffffff"
         android:textSize="25sp"
-        android:drawableLeft="@drawable/alarm"
-        android:drawableStart="@drawable/alarm"
+
         android:drawablePadding="10sp"
         android:paddingLeft="10sp"
         android:paddingStart="10sp"

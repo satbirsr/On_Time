@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by AKresling on 14-11-30.
  */
 public class Alarm {
-    private int alarmID;
+    private static Alarm instance;
     private int hour;
     private int minute;
     private int year;
@@ -25,18 +25,13 @@ public class Alarm {
     private String alarmName;
     private Context context;
 
-    public Alarm(int alarmID, int hour, int minute, int year, int day, int month, String alarmName) {
-        this.alarmID = alarmID;
+    public Alarm(int hour, int minute, int year, int day, int month, String alarmName) {
         this.hour = hour;
         this.minute = minute;
         this.year = year;
         this.day = day;
         this.month = month;
         this.alarmName = alarmName;
-    }
-
-    public int getAlarmID() {
-        return alarmID;
     }
 
     public int getHour() {
@@ -89,7 +84,7 @@ public class Alarm {
         return cal.getTimeInMillis();
     }
 
-    public static Alarm createNewAlarm(
+    public static Alarm getInstance(
             int hour,
             int minute,
             int year,
@@ -97,12 +92,11 @@ public class Alarm {
             int month,
             String alarmName
     ) {
-        /*
-            Need a way to come up with new id
-            Probably by retrieving lastest id from DB
-         */
-        int id = 0;
-        return new Alarm(id, hour, minute, year, day, month, alarmName);
+        if(Alarm.instance == null) {
+            Alarm.instance = new Alarm(hour, minute, year, day, month, alarmName);
+        }
+        return Alarm.instance;
+
     }
 
     public void setAlarm(Context context) {
@@ -125,14 +119,16 @@ public class Alarm {
         this way the context will be the same for
         set alarm and cancel alarm
      */
-    public void cancelAlarm(Context context) {
-        this.context = context;
+    public void cancelAlarm() {
+        if(this.context == null) {
+            return;
+        }
         PendingIntent pendingIntent;
 
-        Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+        Intent alarmIntent = new Intent(this.context, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this.context, 0, alarmIntent, 0);
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
 }

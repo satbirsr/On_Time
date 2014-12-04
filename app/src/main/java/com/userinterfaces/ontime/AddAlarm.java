@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.userinterfaces.ontime.Model.Alarm;
 
@@ -16,6 +18,8 @@ public class AddAlarm extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add_alarm);
 
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
@@ -36,7 +40,10 @@ public class AddAlarm extends Activity {
                 );
                 alarm.setAlarm(AddAlarm.this);
 
-                System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
+                String confirmation = "Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute();
+                Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+
+                System.out.println();
             }
         });
     }

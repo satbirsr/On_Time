@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:type="linear"
+        android:angle="90"
+        android:centerX="0.5"
+        android:centerY="0.5"
+        android:startColor="#3e8087"
+        android:endColor="#57a543"
+        />
+</shape>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<resources>-->
+<!--<color name="homeTopColour">#437ba5</color>-->
+<!--<color name="homeBottomColour">#743e87</color>-->
+<!--<color name="alarmTopColour">#58a543</color>-->
+<!--<color name="alarmBottomColour">#3e8087</color>-->
+<!--<color name="wakeupTopColour">#a54367</color>-->
+<!--<color name="wakeupBottomColour">#87833e</color>-->
+<!--</resources>-->

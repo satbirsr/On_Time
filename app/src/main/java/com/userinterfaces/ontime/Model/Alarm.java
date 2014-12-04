@@ -130,5 +130,7 @@ public class Alarm {
 
         AlarmManager alarmManager = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+
+        Alarm.instance = null;
     }
 }

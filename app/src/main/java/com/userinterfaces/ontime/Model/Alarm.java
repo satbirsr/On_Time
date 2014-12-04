@@ -16,6 +16,7 @@ import java.util.Date;
  * Created by AKresling on 14-11-30.
  */
 public class Alarm {
+    public static final int MINUTE_IN_MILLIS = 60000;
     private static Alarm instance;
     private int hour;
     private int minute;
@@ -78,6 +79,10 @@ public class Alarm {
         return alarmName;
     }
 
+    public Context getContext() {
+        return this.context;
+    }
+
     public long timeInMillis() {
         Calendar cal = Calendar.getInstance();
         cal.set(this.year, this.month, this.day, this.hour, this.minute, 0);
@@ -105,6 +110,20 @@ public class Alarm {
             Alarm.instance = new Alarm(hour, minute, year, day, month, alarmName);
         }
         return Alarm.instance;
+
+    }
+
+    public void fifteenMinAdjust() {
+        // check weather
+        Calendar cal = Calendar.getInstance();
+        cal.set(this.year, this.month, this.day, this.hour, this.minute, 0);
+        cal.setTimeInMillis(cal.getTimeInMillis() - (15 * MINUTE_IN_MILLIS));
+        Alarm alarmCopy = new Alarm(cal.get(cal.HOUR), cal.get(cal.MINUTE), cal.get(cal.YEAR), cal.get(cal.DAY_OF_MONTH),
+                cal.get(cal.MONTH), "alarm copy");
+
+        alarmCopy.setAlarm(Alarm.instance.getContext());
+        Alarm.instance.cancelAlarm();
+        Alarm.instance = alarmCopy;
 
     }
 

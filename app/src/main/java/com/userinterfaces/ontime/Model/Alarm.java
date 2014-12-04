@@ -118,8 +118,14 @@ public class Alarm {
         Calendar cal = Calendar.getInstance();
         cal.set(this.year, this.month, this.day, this.hour, this.minute, 0);
         cal.setTimeInMillis(cal.getTimeInMillis() - (15 * MINUTE_IN_MILLIS));
-        Alarm alarmCopy = new Alarm(cal.get(cal.HOUR), cal.get(cal.MINUTE), cal.get(cal.YEAR), cal.get(cal.DAY_OF_MONTH),
-                cal.get(cal.MONTH), "alarm copy");
+        Alarm alarmCopy = new Alarm(
+                cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.DAY_OF_MONTH),
+                cal.get(Calendar.MONTH),
+                "alarm copy"
+        );
 
         alarmCopy.setAlarm(Alarm.instance.getContext());
         Alarm.instance.cancelAlarm();

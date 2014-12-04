@@ -2,6 +2,9 @@ package com.userinterfaces.ontime;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.userinterfaces.ontime.Model.Alarm;
+import com.userinterfaces.ontime.Model.WeatherCheckReceiver;
 
 public class AddAlarm extends Activity {
 
@@ -37,6 +41,13 @@ public class AddAlarm extends Activity {
                         "New Alarm"
                 );
                 alarm.setAlarm(AddAlarm.this);
+
+                Intent alarmIntent = new Intent(AddAlarm.this, WeatherCheckReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddAlarm.this, 1, alarmIntent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) AddAlarm.this.getSystemService(Context.ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (20 * 60000), pendingIntent);
 
                 System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
             }

@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.userinterfaces.ontime.Model.Alarm;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class AddAlarm extends Activity {
 
     @Override
@@ -40,7 +43,13 @@ public class AddAlarm extends Activity {
                 );
                 alarm.setAlarm(AddAlarm.this);
 
-                String confirmation = "Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute();
+                Calendar c = Calendar.getInstance();
+                c.set(alarm.getYear(), alarm.getMonth(), alarm.getDay(), alarm.getHour(), alarm.getMinute());
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
+
+                String confirmation = "Alarm set: " + timeFormat.format(c.getTime()) + " on " + dateFormat.format(c.getTime());
                 Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
 
                 System.out.println();

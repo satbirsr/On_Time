@@ -84,6 +84,11 @@ public class Alarm {
         return cal.getTimeInMillis();
     }
 
+    public static Alarm getExistingInstance()
+    {
+        return Alarm.instance;
+    }
+
     public static Alarm getInstance(
             int hour,
             int minute,

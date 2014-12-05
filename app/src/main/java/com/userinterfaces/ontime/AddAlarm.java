@@ -1,6 +1,10 @@
 package com.userinterfaces.ontime;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +16,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.userinterfaces.ontime.Model.Alarm;
+import com.userinterfaces.ontime.Model.WeatherCheckReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,12 +33,13 @@ public class AddAlarm extends Activity {
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         final DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         Button setButton = (Button) findViewById(R.id.setButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         setButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
 
-                Alarm alarm = Alarm.createNewAlarm(
+                Alarm alarm = Alarm.getInstance(
                         timePicker.getCurrentHour(),
                         timePicker.getCurrentMinute(),
                         datePicker.getYear(),
@@ -49,10 +55,27 @@ public class AddAlarm extends Activity {
                 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
 
+                Intent alarmIntent = new Intent(AddAlarm.this, WeatherCheckReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddAlarm.this, 1, alarmIntent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) AddAlarm.this.getSystemService(Context.ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (2 * 60000), pendingIntent);
+
                 String confirmation = "Alarm set: " + timeFormat.format(c.getTime()) + " on " + dateFormat.format(c.getTime());
                 Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+            }
+        });
 
-                System.out.println();
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                Alarm alarm = Alarm.getExistingInstance();
+
+                alarm.cancelAlarm();
+
+                System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
             }
         });
     }

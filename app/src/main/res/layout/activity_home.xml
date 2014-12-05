@@ -1,14 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Home"
-    android:background="@drawable/background_home"
-    android:weightSum="1"
+    android:background="@drawable/background_gradient_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     >
-
 
     <TextView
         android:id="@+id/theTime"
@@ -20,67 +16,97 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100sp"
+        android:layout_above="@+id/theDate"
         />
 
     <TextView
         android:id="@+id/theMarker"
         android:text="@string/default_marker"
-        android:textColor="#88ffffff"
+        android:textColor="#ffffff"
         android:textSize="30sp"
         android:fontFamily="sans-serif-condensed"
+        android:alpha="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/theTime" android:layout_toEndOf="@id/theTime"
-        android:layout_alignTop="@+id/theTime"
-        android:paddingLeft="10sp" android:paddingStart="10sp"
-        android:paddingTop="20sp"
+        android:layout_alignBaseline="@+id/theTime"
         />
 
     <TextView
         android:id="@+id/theSec"
         android:text="@string/default_sec"
-        android:textColor="#88ffffff"
-        android:textSize="30sp"
-        android:fontFamily="sans-serif-condensed"
+        android:textColor="#ffffff"
+        android:textSize="35sp"
+        android:alpha="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/theMarker" android:layout_alignEnd="@id/theMarker"
-        android:layout_alignBaseline="@+id/theTime"
+        android:layout_alignTop="@+id/theTime"
+        android:paddingTop="25sp"
         android:paddingLeft="10sp" android:paddingStart="10sp"
         />
 
     <TextView
         android:id="@+id/theDate"
         android:text="@string/default_date"
-        android:textColor="#88ffffff"
+        android:textColor="#ffffff"
         android:textSize="30sp"
         android:fontFamily="sans-serif-condensed"
+        android:alpha="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/theMarker" android:layout_alignEnd="@id/theMarker"
-        android:layout_below="@+id/theTime"
+        android:layout_centerVertical="true"
         />
 
     <Button
-        android:id="@+id/goToAddAlarmButton"
-        android:text="@string/button_addAlarm"
-        android:background="@drawable/background_button"
+        android:id="@+id/goToNightButton"
+        android:background="@drawable/background_button_circle"
+        android:drawableRight="@drawable/ic_night" android:drawableEnd="@drawable/ic_night"
+        android:alpha="0.5"
+        android:paddingLeft="15sp" android:paddingStart="15sp"
+        android:paddingRight="15sp" android:paddingEnd="15sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
+        android:id="@+id/nextAlarmDisplay"
+        android:text="@string/noNextAlarm"
         android:textColor="#ffffff"
         android:textSize="25sp"
-        android:drawableLeft="@drawable/ic_alarm"
-        android:drawableStart="@drawable/ic_alarm"
+        android:drawableLeft="@drawable/ic_next_alarm" android:drawableStart="@drawable/ic_next_alarm"
         android:drawablePadding="10sp"
-        android:paddingLeft="10sp"
-        android:paddingStart="10sp"
-        android:paddingRight="20sp"
-        android:paddingEnd="20sp"
+        android:alpha="0.5"
+        android:paddingLeft="15sp" android:paddingStart="15sp"
+        android:paddingRight="20sp" android:paddingEnd="20sp"
         android:paddingTop="10sp"
         android:paddingBottom="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        />
+
+    <Button
+        android:id="@+id/goToAddAlarmButton"
+        android:background="@drawable/background_button_circle"
+        android:textColor="#ffffff"
+        android:textSize="25sp"
+        android:drawableRight="@drawable/ic_add_alarm" android:drawableEnd="@drawable/ic_add_alarm"
+        android:alpha="0.5"
+        android:paddingLeft="15sp" android:paddingStart="15sp"
+        android:paddingRight="15sp" android:paddingEnd="15sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         />
 
     <!--<TextView android:text="@string/whats_up" android:layout_width="wrap_content"-->

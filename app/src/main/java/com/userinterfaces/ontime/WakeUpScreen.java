@@ -1,31 +1,52 @@
 package com.userinterfaces.ontime;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class WakeUpScreen extends Activity {
+
+    // constants
+    int UPDATE_INTERVAL = 1000;     // duration (ms) to sleep between updates to time displays
+
+    // time formatting
+    SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm");
+    SimpleDateFormat markerFormat = new SimpleDateFormat("a");
+    SimpleDateFormat secFormat = new SimpleDateFormat("ss");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
 
     private MediaPlayer alarmSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wake_up_screen);
+
         System.out.println("Waking up device");
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
                         WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
@@ -36,7 +57,7 @@ public class WakeUpScreen extends Activity {
                         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                         WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wakeLock = pm.newWakeLock((WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "OnTime");
         wakeLock.acquire();
 
         Button imAwakeButton = (Button) findViewById(R.id.imAwakeButton);
@@ -44,15 +65,19 @@ public class WakeUpScreen extends Activity {
         imAwakeButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                Intent homeScreen = new Intent(getApplicationContext(), Home.class);
-
-                alarmSound.stop();
-
-                startActivity(homeScreen);
+                dismissAlarm();
             }
         });
 
         playSound(this, getAlarmUri());
+
+        // start updating the time
+        Runnable updater = new TimeUpdater();
+        Thread updateThread = new Thread(updater);
+        updateThread.start();
+
+        // prevent initiation of extra alarm sounds by locking orientation
+        lockOrientation();
     }
 
     private void playSound(Context context, Uri alert) {
@@ -106,5 +131,105 @@ public class WakeUpScreen extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateTime() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    // update main time display
+                    Calendar c = Calendar.getInstance();
+                    String time = timeFormat.format(c.getTime());
+                    String marker = markerFormat.format(c.getTime());
+                    String sec = secFormat.format(c.getTime());
+                    String date = dateFormat.format(c.getTime());
+
+                    TextView timeText = (TextView)findViewById(R.id.theTime);
+                    TextView markerText = (TextView)findViewById(R.id.theMarker);
+                    TextView secText = (TextView)findViewById(R.id.theSec);
+                    TextView dateText = (TextView)findViewById(R.id.theDate);
+
+                    timeText.setText(time);
+                    markerText.setText(marker);
+                    secText.setText(sec);
+                    dateText.setText(date);
+
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+        });
+    }
+
+    class TimeUpdater implements Runnable {
+
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    updateTime();
+                    Thread.sleep(UPDATE_INTERVAL);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+        }
+    }
+
+    private void dismissAlarm () {
+        alarmSound.stop();
+        Intent homeScreen = new Intent(getApplicationContext(), Home.class);
+        startActivity(homeScreen);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        dismissAlarm();
+    }
+
+
+    // Based on a method by Roy of StackOverflow.com
+    private void lockOrientation() {
+        Display display = this.getWindowManager().getDefaultDisplay();
+        int rotation = display.getRotation();
+        int height;
+        int width;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+            height = display.getHeight();
+            width = display.getWidth();
+        } else {
+            Point size = new Point();
+            display.getSize(size);
+            height = size.y;
+            width = size.x;
+        }
+        switch (rotation) {
+            case Surface.ROTATION_90:
+                if (width > height)
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                else
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                break;
+            case Surface.ROTATION_180:
+                if (height > width)
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                else
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                break;
+            case Surface.ROTATION_270:
+                if (width > height)
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                else
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            default :
+                if (height > width)
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                else
+                    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 }

@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Home"
+    android:background="@android:color/black"
+    android:weightSum="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <Button
+        android:id="@+id/goToHomeButton"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:id="@+id/theTime"
+        android:text="@string/default_time"
+        android:textColor="#ffffff"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed"
+        android:alpha="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/nextAlarmDisplay"
+        />
+
+    <TextView
+        android:id="@+id/theMarker"
+        android:text="@string/default_marker"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-condensed"
+        android:alpha="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/theTime" android:layout_toEndOf="@id/theTime"
+        android:layout_alignBaseline="@+id/theTime"
+        android:paddingTop="25sp"
+        />
+
+    <TextView
+        android:id="@+id/nextAlarmDisplay"
+        android:text="@string/noNextAlarm"
+        android:textColor="#ffffff"
+        android:textSize="25sp"
+        android:drawableLeft="@drawable/ic_next_alarm" android:drawableStart="@drawable/ic_next_alarm"
+        android:drawablePadding="10sp"
+        android:alpha="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/theMarker" android:layout_alignEnd="@id/theMarker"
+        android:layout_centerVertical="true"
+        />
+
+    <!--<TextView android:text="@string/whats_up" android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+
+</RelativeLayout>

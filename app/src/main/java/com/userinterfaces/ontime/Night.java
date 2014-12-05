@@ -10,18 +10,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class Home extends Activity {
+public class Night extends Activity {
 
     // constants
     int UPDATE_INTERVAL = 1000;     // duration (ms) to sleep between updates to time displays
 
-    // time formatting
+    // default time formatting
     SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm");
     SimpleDateFormat markerFormat = new SimpleDateFormat("a");
     SimpleDateFormat secFormat = new SimpleDateFormat("ss");
@@ -33,7 +35,14 @@ public class Home extends Activity {
         super.onCreate(savedInstanceState);
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_night);
+
+        // hide the OS notification bar at top of screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // hide the OS soft-key bar at bottom of screen
+        this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
         // check next alarm time
         SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.alarmData), Context.MODE_PRIVATE);
@@ -48,21 +57,12 @@ public class Home extends Activity {
         Thread updateThread = new Thread(updater);
         updateThread.start();
 
-        Button goToAddAlarmButton = (Button) findViewById(R.id.goToAddAlarmButton);
-        Button goToNightButton = (Button) findViewById(R.id.goToNightButton);
+        Button goToHomeButton = (Button) findViewById(R.id.goToHomeButton);
 
-        goToAddAlarmButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                Intent nextScreen = new Intent(getApplicationContext(), AddAlarm.class);
-                startActivity(nextScreen);
-            }
-        });
-
-        goToNightButton.setOnClickListener(new View.OnClickListener() {
+        goToHomeButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                Intent nextScreen = new Intent(getApplicationContext(), Night.class);
+                Intent nextScreen = new Intent(getApplicationContext(), Home.class);
                 startActivity(nextScreen);
             }
         });
@@ -111,6 +111,19 @@ public class Home extends Activity {
                     markerText.setText(marker);
                     secText.setText(sec);
                     dateText.setText(date);
+
+                    // update next alarm time display
+                    Bundle extras = getIntent().getExtras();
+                    if (extras != null) {
+                        String value = extras.getString("nextAlarmTime");
+                        if (value != null) {
+                            TextView alarmText = (TextView)findViewById(R.id.nextAlarmDisplay);
+                            alarmText.setText(value);
+                        } else {
+                            TextView alarmText = (TextView)findViewById(R.id.nextAlarmDisplay);
+                            alarmText.setText(R.string.noNextAlarm);
+                        }
+                    }
 
                 } catch (Exception e) {
                     // do nothing

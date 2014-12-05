@@ -5,6 +5,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,8 +26,13 @@ import java.util.Calendar;
 
 public class AddAlarm extends Activity {
 
+    // time formatting
+    SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         super.onCreate(savedInstanceState);
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -33,49 +41,44 @@ public class AddAlarm extends Activity {
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         final DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
         Button setButton = (Button) findViewById(R.id.setButton);
-        Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         setButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
 
+                // setup the alarm
                 Alarm alarm = Alarm.getInstance(
                         timePicker.getCurrentHour(),
                         timePicker.getCurrentMinute(),
                         datePicker.getYear(),
                         datePicker.getDayOfMonth(),
                         datePicker.getMonth(),
-                        "New Alarm"
+                        "OnTime Alarm"
                 );
                 alarm.setAlarm(AddAlarm.this);
 
+                // confirm we are setting the alarm
                 Calendar c = Calendar.getInstance();
                 c.set(alarm.getYear(), alarm.getMonth(), alarm.getDay(), alarm.getHour(), alarm.getMinute());
-
-                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
-
-                Intent alarmIntent = new Intent(AddAlarm.this, WeatherCheckReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddAlarm.this, 1, alarmIntent, 0);
-
-                AlarmManager alarmManager = (AlarmManager) AddAlarm.this.getSystemService(Context.ALARM_SERVICE);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (2 * 60000), pendingIntent);
-
                 String confirmation = "Alarm set: " + timeFormat.format(c.getTime()) + " on " + dateFormat.format(c.getTime());
                 Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
-            }
-        });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+                // save next alarm time
+                SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.alarmData), Context.MODE_PRIVATE);
+                Editor editor = sharedpreferences.edit();
+                editor.putString(getString(R.string.nextAlarm), timeFormat.format(c.getTime()));
+                editor.commit();
 
-            public void onClick(View arg0) {
+                // go back to home
+                Intent nextScreen = new Intent(getApplicationContext(), Home.class);
+//                nextScreen.putExtra("nextAlarmTime", timeFormat.format(c.getTime()));
+                startActivity(nextScreen);
 
-                Alarm alarm = Alarm.getExistingInstance();
-
-                alarm.cancelAlarm();
-
-                System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
+                // send alarm to system
+                Intent alarmIntent = new Intent(AddAlarm.this, WeatherCheckReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(AddAlarm.this, 1, alarmIntent, 0);
+                AlarmManager alarmManager = (AlarmManager) AddAlarm.this.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (2 * 60000), pendingIntent);
             }
         });
     }

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.userinterfaces.ontime.AlarmService;
+//import com.userinterfaces.ontime.AlarmService;
 import com.userinterfaces.ontime.RetrieveWeather;
 import com.userinterfaces.ontime.Tracker;
 
@@ -12,11 +12,11 @@ import com.userinterfaces.ontime.Tracker;
  * Created by AKresling on 14-12-04.
  */
 public class WeatherCheckReceiver extends BroadcastReceiver {
-    boolean badWeather = true;
+//    boolean badWeather = true;
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("Reached adjust receiver");
-        RetrieveWeather weather = null;
+        RetrieveWeather weather;//
         Tracker track = new Tracker(context);
         System.out.println("tracker 2r");
         //try {

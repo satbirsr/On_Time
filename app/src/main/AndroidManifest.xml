@@ -37,6 +37,10 @@
             android:name="com.userinterfaces.ontime.AddAlarm"
             android:label="@string/title_activity_add_alarm" >
         </activity>
+        <activity
+            android:name="com.userinterfaces.ontime.Night"
+            android:label="@string/title_activity_night" >
+        </activity>
 
         <service
             android:name="com.userinterfaces.ontime.AlarmService"
@@ -47,7 +51,7 @@
 
         <activity
             android:name="com.userinterfaces.ontime.WakeUpScreen"
-            android:label="@string/title_activity_wake_up_screen" >
+            android:label="@string/title_activity_wake_up_screen">
         </activity>
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

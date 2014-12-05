@@ -1,6 +1,7 @@
 package com.userinterfaces.ontime;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.content.Context;
 import android.content.Intent;
@@ -59,6 +60,23 @@ public class WakeUpScreen extends Activity {
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "OnTime");
         wakeLock.acquire();
+
+        // check weather condition
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.alarmData), Context.MODE_PRIVATE);
+        String displayCondition = "The weather's fine.";
+        if (sharedpreferences.contains(getString(R.string.weatherCondition))) {
+            String rawCondition = sharedpreferences.getString(getString(R.string.weatherCondition), "");
+            if (rawCondition.length() > 0) {
+                if (rawCondition.equals("SNOWY"))
+                    displayCondition = "It's snowy today.";
+                else if (rawCondition.equals("CLOUDY"))
+                    displayCondition = "It's cloudy today.";
+                else if (rawCondition.equals("RAINY"))
+                    displayCondition = "It's rainy today.";
+            }
+        }
+        TextView weatherConditionText = (TextView)findViewById(R.id.weatherCondition);
+        weatherConditionText.setText(displayCondition);
 
         Button imAwakeButton = (Button) findViewById(R.id.imAwakeButton);
 
@@ -180,6 +198,13 @@ public class WakeUpScreen extends Activity {
 
     private void dismissAlarm () {
         alarmSound.stop();
+
+        // clear next alarm time
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.alarmData), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(getString(R.string.nextAlarm), getString(R.string.noNextAlarm));
+        editor.commit();
+
         Intent homeScreen = new Intent(getApplicationContext(), Home.class);
         startActivity(homeScreen);
     }

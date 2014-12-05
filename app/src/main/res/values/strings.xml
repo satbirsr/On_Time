@@ -27,4 +27,9 @@
 
     <string name="alarmData">alarmData</string>
     <string name="nextAlarm">nextAlarm</string>
+    <string name="weatherCondition">weatherCondition</string>
+
+    <string name="rainy">rainy</string>
+    <string name="snowy">snowy</string>
+    <string name="cloudy">cloudy</string>
 </resources>

@@ -64,10 +64,11 @@
     <Button
         android:id="@+id/goToAddAlarmButton"
         android:text="@string/button_addAlarm"
-        android:background="@drawable/button_background"
+        android:background="@drawable/background_button"
         android:textColor="#ffffff"
         android:textSize="25sp"
-
+        android:drawableLeft="@drawable/ic_alarm"
+        android:drawableStart="@drawable/ic_alarm"
         android:drawablePadding="10sp"
         android:paddingLeft="10sp"
         android:paddingStart="10sp"

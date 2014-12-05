@@ -9,18 +9,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.userinterfaces.ontime.Model.Alarm;
 import com.userinterfaces.ontime.Model.WeatherCheckReceiver;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class AddAlarm extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add_alarm);
 
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
@@ -42,6 +49,12 @@ public class AddAlarm extends Activity {
                 );
                 alarm.setAlarm(AddAlarm.this);
 
+                Calendar c = Calendar.getInstance();
+                c.set(alarm.getYear(), alarm.getMonth(), alarm.getDay(), alarm.getHour(), alarm.getMinute());
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d");
+
                 Intent alarmIntent = new Intent(AddAlarm.this, WeatherCheckReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AddAlarm.this, 1, alarmIntent, 0);
 
@@ -49,7 +62,8 @@ public class AddAlarm extends Activity {
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.timeInMillis() - (2 * 60000), pendingIntent);
 
-                System.out.println("Alarm set for " + alarm.getDay() + " " + alarm.getHour() + " " + alarm.getMinute());
+                String confirmation = "Alarm set: " + timeFormat.format(c.getTime()) + " on " + dateFormat.format(c.getTime());
+                Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
             }
         });
 

@@ -15,8 +15,8 @@
     <string name="title_activity_wake_up_screen">Wake Up</string>
     <string name="title_activity_night">Night Mode</string>
 
-    <string name="default_time">00:00</string>
-    <string name="default_marker">AM</string>
+    <string name="default_time">5:00</string>
+    <string name="default_marker">PM</string>
     <string name="default_sec">00</string>
     <string name="default_date">Thu Jan 1</string>
 

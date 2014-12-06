@@ -20,7 +20,6 @@ public class Home extends Activity {
 
     // constants
     int UPDATE_INTERVAL = 1000;     // duration (ms) to sleep between updates to time displays
-    boolean debugging = false;
 
     // time formatting
     SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm");
@@ -51,7 +50,6 @@ public class Home extends Activity {
 
         Button goToAddAlarmButton = (Button) findViewById(R.id.goToAddAlarmButton);
         Button goToNightButton = (Button) findViewById(R.id.goToNightButton);
-        Button debugButton = (Button) findViewById(R.id.debugButton);
 
         goToAddAlarmButton.setOnClickListener(new View.OnClickListener() {
 
@@ -68,18 +66,6 @@ public class Home extends Activity {
                 startActivity(nextScreen);
             }
         });
-
-        if (debugging) {
-            debugButton.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View arg0) {
-                    Intent nextScreen = new Intent(getApplicationContext(), WakeUpScreen.class);
-                    startActivity(nextScreen);
-                }
-            });
-        } else {
-            debugButton.setVisibility(View.GONE);
-        }
     }
 
 

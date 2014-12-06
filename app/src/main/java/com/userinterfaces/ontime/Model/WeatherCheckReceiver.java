@@ -26,7 +26,6 @@ public class WeatherCheckReceiver extends BroadcastReceiver {
         weather = new RetrieveWeather(context, track.getLatitude(), track.getLongitude());
 
         String condition = weather.getCondition();
-//        condition = "SNOWY";
 
 //        System.out.println("weather condition is " + condition);
         if(!condition.equals("") && !condition.equals("CLOUDY")) {
